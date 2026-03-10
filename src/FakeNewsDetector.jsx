@@ -58,30 +58,37 @@ export default function FakeNewsDetector() {
       });
     }, 200);
 
-    try {
-      const response = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          model: "claude-sonnet-4-20250514",
-          max_tokens: 1000,
-          system: SYSTEM_PROMPT,
-          messages: [{ role: "user", content: `Analyze this article:\n\n${articleText}` }],
-        }),
-      });
+try {
+  const response = await fetch("https://api.anthropic.com/v1/messages", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-api-key": "YOUR_API_KEY",
+      "anthropic-version": "2023-06-01"
+    },
+    body: JSON.stringify({
+      model: "claude-3-5-sonnet-20240620",
+      max_tokens: 1000,
+      system: SYSTEM_PROMPT,
+      messages: [{ role: "user", content: `Analyze this article:\n\n${articleText}` }]
+    })
+  });
 
-      const data = await response.json();
-      const raw = data.content?.map(b => b.text || "").join("") || "";
-      const cleaned = raw.replace(/```json|```/g, "").trim();
-      const parsed = JSON.parse(cleaned);
+  const data = await response.json();
+  const raw = data?.content?.[0]?.text || "";
 
-      clearInterval(intervalRef.current);
-      setScanProgress(100);
-      setTimeout(() => setResult(parsed), 400);
-    } catch (e) {
-      clearInterval(intervalRef.current);
-      setError("Analysis failed. Please try again.");
-    } finally {
+  const cleaned = raw.replace(/```json|```/g, "").trim();
+  const parsed = JSON.parse(cleaned);
+
+  clearInterval(intervalRef.current);
+  setScanProgress(100);
+  setTimeout(() => setResult(parsed), 400);
+
+} catch (e) {
+  console.error(e);
+  clearInterval(intervalRef.current);
+  setError("Analysis failed. Please try again.");
+} finally {
       setIsAnalyzing(false);
     }
   };
