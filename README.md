@@ -315,3 +315,5 @@ This project is licensed under the **MIT License** — see the [LICENSE](LICENSE
   ⭐ Star this repo if you find it useful!
 </p>
 <img width="920" height="779" alt="image" src="https://github.com/user-attachments/assets/6a33c0c6-ab24-42f0-b162-3f6f975cd62f" />
+<img width="1902" height="467" alt="image" src="https://github.com/user-attachments/assets/bd726cd2-443b-451a-969e-da269ab39f53" />
+
